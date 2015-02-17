@@ -3,8 +3,8 @@ library(caret)
 library(beepr)
 
 source("loadFeatures.R")
-data <- loadFeatures("../data/ComplaintData-ExtendedRaw.csv", c("ComplaintId", "Severity", "VictimId", "SuspectId"
-                                                     #, "Credit.Purchases..Suspect.", "Credit.Purchases..Victim." # near zero variance
+data <- loadFeatures("../data/ComplaintData-ExtendedRaw2.csv", c("ComplaintId", "Severity", "VictimId", "SuspectId"
+                                                    , "Credit.Purchases..Suspect." , "Credit.Purchases..Victim." # near zero variance  
                                                      # Communicative Features
                                                      #, "Victim.To.Suspect.Chats", "Suspect.To.Victim.Chats", "Suspect.To.Victim.Invites", "Victim.To.Suspect.PM", "Suspect.To.Victim.PM"
                                                      # Victim Data
@@ -23,7 +23,7 @@ do_pls <- function (training) {
         
     modelFit <- train(training$Class ~ ., 
                       data = training,
-                      preProcess=c("center","scale"), 
+                      #preProcess=c("center","scale"), 
                       trControl = fitControl,
                       method="pls")
     modelFit

@@ -9,7 +9,8 @@ library(beepr)
 
 source("loadFeatures.R")
 data <- loadFeatures("../data/ComplaintData-ExtendedRaw2.csv", c("ComplaintId", "Severity", "VictimId", "SuspectId"
-                 , "Credit.Purchases..Suspect." , "Credit.Purchases..Victim." # near zero variance                 
+                 ,"Friendship.Invitations", "VictimToSuspectPM", "SuspectToVictimPM" # <- These just diminish the score!
+                 #, "Credit.Purchases..Suspect." , "Credit.Purchases..Victim." # near zero variance                 
                  # Communicative Features
                  #, "Victim.To.Suspect.Chats", "Suspect.To.Victim.Chats", "Suspect.To.Victim.Invites", "Victim.To.Suspect.PM", "Suspect.To.Victim.PM"                 
                  # Victim Data
@@ -22,35 +23,7 @@ data <- loadFeatures("../data/ComplaintData-ExtendedRaw2.csv", c("ComplaintId", 
 do_gbm <- function (training) {
     print("Stochastic Gradient Boosting (gbm)")
     set.seed(42423)
-  
-#     ctrl <- trainControl(method = "repeatedcv",
-#                        allowParallel = T,
-#                        repeats = 10,
-#                        number = 10,                       
-#                        classProbs = T,
-#                        summaryFunction = twoClassSummary
-#                        )
 
-#   ctrl <- trainControl(
-#     allowParallel = T,
-#     classProbs = T,
-#     summaryFunction = twoClassSummary,
-#     method = "cv",
-#     number = 10)
-
-#     gbmGrid <-  expand.grid(interaction.depth = 3,
-#                           n.trees = 400,
-#                           shrinkage = 0.01)
-
-#     modelFit <- train(training$Class ~ .,
-#                    data = training,
-#                    method = "gbm",
-#                    trControl = ctrl,
-#                    #preProcess=c("center","scale"),
-#                    metric = "ROC",
-#                    tuneGrid = gbmGrid,
-#                    verbose = FALSE)
-#     modelFit
     gbmFit <- gbm(training$Class ~ ., 
                   data = training,
             distribution="bernoulli",

@@ -14,25 +14,25 @@ data <- loadFeatures("../data/ComplaintData-ExtendedRaw2.csv", c("ComplaintId", 
                                                      #      , "Victim.To.Suspect.Chats" , "Suspect.To.Victim.Chats", "Suspect.To.Victim.Invites", "Victim.To.Suspect.PM", "Suspect.To.Victim.PM"
 ))
 
-svm <- function (training) {
-  print("SVM (Radial Basis Function Kernel) with 10-fold cv training, no center and scaling")
+knn <- function (training) {
+  print("kNN with Bootstrapped resampling, with center and scaling")
   set.seed(42423)
   
-  fitControl <- trainControl(
-    method = "cv",
-    number = 10)
+  bootControl <- trainControl(number = 5)
+  knnGrid <- expand.grid(.k=c(2:10))
   
   modelFit <- train(training$Class ~., 
                     data = training, 
-                    #preProcess=c("center","scale"), 
+                    preProcess=c("center","scale"), 
                     method = "knn",
-                    trControl = fitControl)
+                    trControl = bootControl,
+                    tuneGrid = knnGrid)
   modelFit
 }
 
 data$training$Class <- as.factor(data$training$Class)
 data$testing$Class <- as.factor(data$testing$Class)
 
-modelSVM <- svm(data$training)
-SVMcm <- confusionMatrix(data=predict(modelSVM, newdata=data$testing), data$testing$Class, positive = "0")
+modelKNN <- knn(data$training)
+KNNcm <- confusionMatrix(data=predict(modelKNN, newdata=data$testing), data$testing$Class, positive = "0")
 beep()

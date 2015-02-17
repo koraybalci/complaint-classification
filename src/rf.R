@@ -5,7 +5,7 @@ library(beepr)
 
 source("loadFeatures.R")
 data <- loadFeatures("../data/ComplaintData-ExtendedRaw2.csv", c("ComplaintId", "Severity", "VictimId", "SuspectId"
-                                                     #, "Credit.Purchases..Suspect." , "Credit.Purchases..Victim." # near zero variance
+                                                     , "Credit.Purchases..Suspect." , "Credit.Purchases..Victim." # near zero variance
                                                      # Communicative Features
                                                      #, "Victim.To.Suspect.Chats", "Suspect.To.Victim.Chats", "Suspect.To.Victim.Invites", "Victim.To.Suspect.PM", "Suspect.To.Victim.PM"
                                                      # Victim Data
